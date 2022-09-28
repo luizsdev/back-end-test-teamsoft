@@ -1,0 +1,20 @@
+{
+  "name": "back-end-test-teamsoft",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luizsdev/back-end-test-teamsoft.git"
+  },
+  "keywords": [],
+  "author": "Luiz Sanches <“luizsdev@gmail.com”>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/luizsdev/back-end-test-teamsoft/issues"
+  },
+  "homepage": "https://github.com/luizsdev/back-end-test-teamsoft#readme"
+}
