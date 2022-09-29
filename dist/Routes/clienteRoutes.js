@@ -9,7 +9,7 @@ const clienteController_1 = require("../Controllers/clienteController");
 const cors_1 = __importDefault(require("cors"));
 const router = (0, express_1.Router)();
 router.use((0, cors_1.default)());
-//FAZ UMA LEITURA DE TODOS OS CLIENTES
+//FAZ UMA LEITURA DE TODOS OS CLIENTES E ENDEREÇOS
 router.get('/clientes', clienteController_1.clienteController.lerClientes);
 //CRIA UM NOVO CLIENTE
 router.post('/cadastrocliente', validarDadosClientes_1.validarDadosClientes, clienteController_1.clienteController.cadastrarClientes);
@@ -19,8 +19,8 @@ router.put('/atualizarcliente/:id', clienteController_1.clienteController.atuali
 router.delete('/removercliente/:id', clienteController_1.clienteController.removerCliente);
 //ADICIONA UM ENDEREÇO BASEADO NO ID DO CLIENTE
 router.post('/adicionarendereco/:id', clienteController_1.clienteController.adicionarEndereco);
-//ALTERA OS DADOS DE UM ENDEREÇO BASEADO NO  ID DE UM ENDEREÇO
+//ALTERA OS DADOS DE UM ENDEREÇO BASEADO NO SEU ID
 router.put('/atualizarendereco/:id', clienteController_1.clienteController.atualizarEndereco);
-//REMOVE UM ENDEREÇO BASEADO NO ID DE UM CLIENTE E ID DO ENDEREÇO
+//REMOVE UM ENDEREÇO BASEADO NO SEU ID
 router.delete('/removerendereco/:id', clienteController_1.clienteController.removerEndereco);
 exports.default = router;
