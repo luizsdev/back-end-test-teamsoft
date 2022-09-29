@@ -58,5 +58,5 @@ export class clienteController {
     }
   }
 }
-/* static async atualizarClientes(req: Request, res: Response) {}
-  static async removerClientes(req: Request, res: Response) {}  */
+//  static async atualizarClientes(req: Request, res: Response) {}
+//   static async removerClientes(req: Request, res: Response) {}
