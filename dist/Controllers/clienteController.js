@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.clienteController = exports.prisma = void 0;
+const infoEndereco_1 = require("../Services/infoEndereco");
 const client_1 = require("@prisma/client");
 exports.prisma = new client_1.PrismaClient();
 class clienteController {
@@ -60,8 +61,9 @@ class clienteController {
                         clienteId: cliente.id,
                     },
                 })
-                    .then(() => {
-                    return res.status(201).json({ message: 'Cliente cadastrado com sucesso', cliente });
+                    .then((endereco) => {
+                    console.log((0, infoEndereco_1.infoEndereco)(primeiroendereco.cep));
+                    return res.status(201).json({ message: 'Cliente cadastrado com sucesso', cliente, endereco });
                 })
                     .catch(() => __awaiter(this, void 0, void 0, function* () {
                     //REMOVE O USER CRIADO COM DADOS DE ENDEREÇO FALTANDO

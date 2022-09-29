@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { infoEndereco } from '../Services/infoEndereco';
 import { Cliente, Endereco } from '../@types/clientTypes';
 import { PrismaClient } from '@prisma/client';
 export const prisma = new PrismaClient();
@@ -49,6 +50,7 @@ export class clienteController {
             },
           })
           .then((endereco: Endereco) => {
+            console.log(infoEndereco(primeiroendereco.cep));
             return res.status(201).json({ message: 'Cliente cadastrado com sucesso', cliente, endereco });
           })
           .catch(async () => {
