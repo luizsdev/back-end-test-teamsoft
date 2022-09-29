@@ -23,11 +23,11 @@ class clienteController {
                 },
             })
                 .then((clientes) => {
-                res.status(201).json(clientes);
+                return res.status(201).json(clientes);
             })
                 .catch((e) => {
                 console.log(e);
-                res.status(400).json({ message: 'Erro ao ler clientes' });
+                return res.status(400).json({ message: 'Erro ao ler clientes' });
             });
         });
     }
@@ -61,19 +61,21 @@ class clienteController {
                     },
                 })
                     .then(() => {
-                    res.status(201).json({ message: 'Cliente cadastrado com sucesso', cliente });
+                    return res.status(201).json({ message: 'Cliente cadastrado com sucesso', cliente });
                 })
-                    .catch(() => {
-                    res.status(400).json({ message: 'Erro ao cadastrar endereço' });
-                });
+                    .catch(() => __awaiter(this, void 0, void 0, function* () {
+                    //REMOVE O USER CRIADO COM DADOS DE ENDEREÇO FALTANDO
+                    yield exports.prisma.cliente.delete({ where: { id: cliente.id } });
+                    return res.status(400).json({ message: 'Erro ao cadastrar endereço' });
+                }));
             }))
                 .catch((e) => {
                 if (e.code === 'P2002') {
-                    res.status(400).json({ message: 'Cliente já cadastrado' });
+                    return res.status(400).json({ message: 'Cliente já cadastrado' });
                 }
                 else {
                     console.log(e);
-                    res.status(400).json({ message: 'Erro ao cadastrar endereço' });
+                    return res.status(400).json({ message: 'Erro ao cadastrar endereço' });
                 }
             });
         });
@@ -94,10 +96,10 @@ class clienteController {
                 },
             })
                 .then((cliente) => {
-                res.status(201).json({ message: 'Cliente atualizado com sucesso', cliente });
+                return res.status(201).json({ message: 'Cliente atualizado com sucesso', cliente });
             })
                 .catch(() => {
-                res.status(400).json({ message: 'Erro ao atualizar cliente' });
+                return res.status(400).json({ message: 'Erro ao atualizar cliente' });
             });
         });
     }
@@ -108,10 +110,10 @@ class clienteController {
             yield exports.prisma.cliente
                 .delete({ where: { id: Number(id) } })
                 .then((cliente) => __awaiter(this, void 0, void 0, function* () {
-                res.status(201).json({ message: 'Cliente e seus endereços removidos com sucesso', cliente });
+                return res.status(201).json({ message: 'Cliente e seus endereços removidos com sucesso', cliente });
             }))
                 .catch(() => {
-                res.status(400).json({ message: 'Erro ao remover cliente' });
+                return res.status(400).json({ message: 'Erro ao remover cliente' });
             });
         });
     }
@@ -136,11 +138,11 @@ class clienteController {
                 },
             })
                 .then((endereco) => {
-                res.status(201).json({ message: 'Endereço adicionado com sucesso', endereco });
+                return res.status(201).json({ message: 'Endereço adicionado com sucesso', endereco });
             })
                 .catch((e) => {
                 console.log(e);
-                res.status(400).json({ message: 'Erro ao adicionar endereço' });
+                return res.status(400).json({ message: 'Erro ao adicionar endereço' });
             });
         });
     }
@@ -155,10 +157,10 @@ class clienteController {
                 data: { logradouro, numero, complemento, bairro, cidade, estado, cep, latitude, longitude },
             })
                 .then((endereco) => {
-                res.status(201).json({ message: 'Endereço atualizado com sucesso', endereco });
+                return res.status(201).json({ message: 'Endereço atualizado com sucesso', endereco });
             })
                 .catch(() => {
-                res.status(400).json({ message: 'Erro ao atualizar endereço' });
+                return res.status(400).json({ message: 'Erro ao atualizar endereço' });
             });
         });
     }
@@ -169,10 +171,10 @@ class clienteController {
             yield exports.prisma.endereco
                 .delete({ where: { id: Number(id) } })
                 .then((endereco) => {
-                res.status(201).json({ message: 'Endereço removido com sucesso', endereco });
+                return res.status(201).json({ message: 'Endereço removido com sucesso', endereco });
             })
                 .catch(() => {
-                res.status(400).json({ message: 'Erro ao remover endereço' });
+                return res.status(400).json({ message: 'Erro ao remover endereço' });
             });
         });
     }

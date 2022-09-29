@@ -12,7 +12,9 @@ const validarDadosClientes = (req, res, next) => {
             res.status(400).json({ message: 'CNPJ inválido, lembre-se de inserir apenas números sem espaços' });
         }
         else if (telefone.length !== 11) {
-            res.status(400).json({ message: 'Telefone inválido, lembre-se de inserir apenas números sem espaços' });
+            res
+                .status(400)
+                .json({ message: 'Telefone inválido, lembre-se de incluir DDD e de inserir apenas números sem espaços' });
         }
         else {
             next();
