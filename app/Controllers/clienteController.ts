@@ -48,8 +48,8 @@ export class clienteController {
               clienteId: cliente.id,
             },
           })
-          .then(() => {
-            return res.status(201).json({ message: 'Cliente cadastrado com sucesso', cliente });
+          .then((endereco: Endereco) => {
+            return res.status(201).json({ message: 'Cliente cadastrado com sucesso', cliente, endereco });
           })
           .catch(async () => {
             //REMOVE O USER CRIADO COM DADOS DE ENDEREÇO FALTANDO
