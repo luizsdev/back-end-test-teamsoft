@@ -30,6 +30,6 @@ model Endereco {
   cep         String
   latitude    String
   longitude   String
-  Cliente     Cliente? @relation(fields: [clienteId], references: [id])
+  Cliente     Cliente? @relation(fields: [clienteId], references: [id], onDelete: Cascade)
   clienteId   Int?
 }

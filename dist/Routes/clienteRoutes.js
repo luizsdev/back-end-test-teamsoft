@@ -14,7 +14,13 @@ router.get('/clientes', clienteController_1.clienteController.lerClientes);
 //CRIA UM NOVO CLIENTE
 router.post('/cadastrocliente', validarDadosClientes_1.validarDadosClientes, clienteController_1.clienteController.cadastrarClientes);
 //ALTERA OS DADOS DE UM CLIENTE EXISTENTE
-router.put('/alterarcliente');
-//DELETA UM CLIENTE
-router.delete('/removercliente');
+router.put('/atualizarcliente/:id', clienteController_1.clienteController.atualizarClientes);
+//REMOVE UM CLIENTE, CONSEQUENTEMENTE SEUS ENDEREÇOS TAMBÉM
+router.delete('/removercliente/:id', clienteController_1.clienteController.removerCliente);
+//ADICIONA UM ENDEREÇO BASEADO NO ID DO CLIENTE
+router.post('/adicionarendereco/:id', clienteController_1.clienteController.adicionarEndereco);
+//ALTERA OS DADOS DE UM ENDEREÇO BASEADO NO  ID DE UM ENDEREÇO
+router.put('/atualizarendereco/:id', clienteController_1.clienteController.atualizarEndereco);
+//REMOVE UM ENDEREÇO BASEADO NO ID DE UM CLIENTE E ID DO ENDEREÇO
+router.delete('/removerendereco/:id', clienteController_1.clienteController.removerEndereco);
 exports.default = router;
