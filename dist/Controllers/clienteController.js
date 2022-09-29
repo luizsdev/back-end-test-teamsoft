@@ -13,7 +13,7 @@ exports.clienteController = exports.prisma = void 0;
 const client_1 = require("@prisma/client");
 exports.prisma = new client_1.PrismaClient();
 class clienteController {
-    //CONTROLLER DE LER CLIENTES
+    //CONTROLLER PARA LER CLIENTES
     static lerClientes(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             exports.prisma.cliente
@@ -23,7 +23,7 @@ class clienteController {
                 },
             })
                 .then((clientes) => {
-                res.json(clientes);
+                res.status(201).json(clientes);
             })
                 .catch((e) => {
                 console.log(e);
@@ -31,7 +31,7 @@ class clienteController {
             });
         });
     }
-    //CONTROLLER DE CADASTRO DE CLIENTES
+    //CONTROLLER PARA CADASTRO DE CLIENTES
     static cadastrarClientes(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { cnpj, razaoSocial, nomeDoContato, telefone, primeiroendereco } = req.body;
@@ -61,7 +61,7 @@ class clienteController {
                     },
                 })
                     .then(() => {
-                    res.status(200).json({ message: 'Cliente cadastrado com sucesso', cliente });
+                    res.status(201).json({ message: 'Cliente cadastrado com sucesso', cliente });
                 })
                     .catch(() => {
                     res.status(400).json({ message: 'Erro ao cadastrar endereço' });
@@ -94,7 +94,7 @@ class clienteController {
                 },
             })
                 .then((cliente) => {
-                res.status(200).json({ message: 'Cliente atualizado com sucesso', cliente });
+                res.status(201).json({ message: 'Cliente atualizado com sucesso', cliente });
             })
                 .catch(() => {
                 res.status(400).json({ message: 'Erro ao atualizar cliente' });
@@ -102,13 +102,13 @@ class clienteController {
         });
     }
     //CONTROLLER PARA REMOVER CLIENTES
-    static removerCliente(req, res) {
+    static removerClientes(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
             yield exports.prisma.cliente
                 .delete({ where: { id: Number(id) } })
                 .then((cliente) => __awaiter(this, void 0, void 0, function* () {
-                res.status(200).json({ message: 'Cliente e seus endereços removidos com sucesso', cliente });
+                res.status(201).json({ message: 'Cliente e seus endereços removidos com sucesso', cliente });
             }))
                 .catch(() => {
                 res.status(400).json({ message: 'Erro ao remover cliente' });
@@ -136,7 +136,7 @@ class clienteController {
                 },
             })
                 .then((endereco) => {
-                res.status(200).json({ message: 'Endereço adicionado com sucesso', endereco });
+                res.status(201).json({ message: 'Endereço adicionado com sucesso', endereco });
             })
                 .catch((e) => {
                 console.log(e);
@@ -155,7 +155,7 @@ class clienteController {
                 data: { logradouro, numero, complemento, bairro, cidade, estado, cep, latitude, longitude },
             })
                 .then((endereco) => {
-                res.status(200).json({ message: 'Endereço atualizado com sucesso', endereco });
+                res.status(201).json({ message: 'Endereço atualizado com sucesso', endereco });
             })
                 .catch(() => {
                 res.status(400).json({ message: 'Erro ao atualizar endereço' });
@@ -169,7 +169,7 @@ class clienteController {
             yield exports.prisma.endereco
                 .delete({ where: { id: Number(id) } })
                 .then((endereco) => {
-                res.status(200).json({ message: 'Endereço removido com sucesso', endereco });
+                res.status(201).json({ message: 'Endereço removido com sucesso', endereco });
             })
                 .catch(() => {
                 res.status(400).json({ message: 'Erro ao remover endereço' });
