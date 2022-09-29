@@ -59,7 +59,8 @@ export class clienteController {
         if (e.code === 'P2002') {
           res.status(400).json({ message: 'Cliente já cadastrado' });
         } else {
-          res.status(400).json({ message: 'Erro ao cadastrar cliente' });
+          console.log(e);
+          res.status(400).json({ message: 'Erro ao cadastrar endereço' });
         }
       });
   }

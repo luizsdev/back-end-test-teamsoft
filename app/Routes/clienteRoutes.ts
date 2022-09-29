@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { validarDadosClientes } from '../Middlewares/validarDadosClientes';
+import { validarDadosClientes, validarDadosEndereco } from '../Middlewares/validarDadosClientes';
 import { clienteController } from '../Controllers/clienteController';
 import cors from 'cors';
 const router = Router();
@@ -14,7 +14,7 @@ router.put('/atualizarcliente/:id', clienteController.atualizarClientes);
 //REMOVE UM CLIENTE, CONSEQUENTEMENTE SEUS ENDEREÇOS TAMBÉM
 router.delete('/removercliente/:id', clienteController.removerCliente);
 //ADICIONA UM ENDEREÇO BASEADO NO ID DO CLIENTE
-router.post('/adicionarendereco/:id', clienteController.adicionarEndereco);
+router.post('/adicionarendereco/:id', validarDadosEndereco, clienteController.adicionarEndereco);
 //ALTERA OS DADOS DE UM ENDEREÇO BASEADO NO SEU ID
 router.put('/atualizarendereco/:id', clienteController.atualizarEndereco);
 //REMOVE UM ENDEREÇO BASEADO NO SEU ID

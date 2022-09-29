@@ -18,7 +18,7 @@ router.put('/atualizarcliente/:id', clienteController_1.clienteController.atuali
 //REMOVE UM CLIENTE, CONSEQUENTEMENTE SEUS ENDEREÇOS TAMBÉM
 router.delete('/removercliente/:id', clienteController_1.clienteController.removerCliente);
 //ADICIONA UM ENDEREÇO BASEADO NO ID DO CLIENTE
-router.post('/adicionarendereco/:id', clienteController_1.clienteController.adicionarEndereco);
+router.post('/adicionarendereco/:id', validarDadosClientes_1.validarDadosEndereco, clienteController_1.clienteController.adicionarEndereco);
 //ALTERA OS DADOS DE UM ENDEREÇO BASEADO NO SEU ID
 router.put('/atualizarendereco/:id', clienteController_1.clienteController.atualizarEndereco);
 //REMOVE UM ENDEREÇO BASEADO NO SEU ID
