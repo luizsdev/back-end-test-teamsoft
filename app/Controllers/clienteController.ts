@@ -127,31 +127,33 @@ export class clienteController {
         return res.status(400).json({ message: 'Erro ao remover cliente' });
       });
   }
-  //CONTROLLER PARA ADICIONAR ENDEREÇOS
-  static async adicionarEndereco(req: Request, res: Response) {
+  //CONTROLLER PARA CADASTRAR ENDEREÇOS
+  static async cadastrarEnderecos(req: Request, res: Response) {
     const { id } = req.params;
-    const { logradouro, numero, complemento, bairro, cidade, estado, cep, latitude, longitude } = req.body;
-    await prisma.endereco
-      .create({
-        data: {
-          logradouro,
-          numero,
-          complemento,
-          bairro,
-          cidade,
-          estado,
-          cep,
-          latitude,
-          longitude,
-          clienteId: Number(id),
-        },
-      })
-      .then((endereco: Endereco) => {
-        return res.status(201).json({ message: 'Endereço adicionado com sucesso', endereco });
-      })
-      .catch(() => {
-        return res.status(400).json({ message: 'Erro ao adicionar endereço' });
-      });
+    const { logradouro, numero, complemento, bairro, cidade, estado, cep } = req.body;
+    await infoEndereco(cep).then(async (cord) => {
+      await prisma.endereco
+        .create({
+          data: {
+            logradouro,
+            numero,
+            complemento,
+            bairro,
+            cidade,
+            estado,
+            cep,
+            latitude: cord.lat,
+            longitude: cord.lng,
+            clienteId: Number(id),
+          },
+        })
+        .then((endereco: Endereco) => {
+          return res.status(201).json({ message: 'Endereço adicionado com sucesso', endereco });
+        })
+        .catch(() => {
+          return res.status(400).json({ message: 'Erro ao adicionar endereço' });
+        });
+    });
   }
   //CONTROLLER PARA ATUALIZAR ENDEREÇOS
   static async atualizarEndereco(req: Request, res: Response) {
@@ -177,13 +179,15 @@ export class clienteController {
           .then((endereco: Endereco) => {
             return res.status(201).json({ message: 'Endereço atualizado com sucesso', endereco });
           })
-          .catch(() => {
+          .catch((e) => {
+            console.log(e);
             return res.status(400).json({ message: 'Erro ao atualizar endereço' });
           });
       })
       .catch(() => {
         res.json(400).json({ message: 'Erro ao atualizar endereço, cheque seu cep' });
-      });
+      })
+      .catch((e) => console.log(e));
   }
   //CONTROLLER PARA REMOVER ENDEREÇOS
   static async removerEndereco(req: Request, res: Response) {

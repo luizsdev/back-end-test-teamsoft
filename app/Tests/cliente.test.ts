@@ -23,9 +23,7 @@ describe('ROTAS CLIENTE', () => {
           bairro: 'teste',
           cidade: 'teste',
           estado: 'RJ',
-          cep: '12345678',
-          latitude: '123',
-          longitude: '123',
+          cep: '65068312',
         },
       });
     userId = response.body.cliente.id;
@@ -55,9 +53,7 @@ describe('ROTAS ENDEREÇO', () => {
       bairro: 'novoTeste',
       cidade: 'novoTeste',
       estado: 'SP',
-      cep: '87654321',
-      latitude: 'novoTeste',
-      longitude: 'novoTeste',
+      cep: '68908780',
     });
     expect(response.status).toBe(201);
   });
@@ -69,9 +65,7 @@ describe('ROTAS ENDEREÇO', () => {
       bairro: 'atualizarTeste',
       cidade: 'atualizarTeste',
       estado: 'MG',
-      cep: '23456789',
-      latitude: 'atualizarTeste',
-      longitude: 'atualizarTeste',
+      cep: '64028150',
     });
     expect(response.status).toBe(201);
   });

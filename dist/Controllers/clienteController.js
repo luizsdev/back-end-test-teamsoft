@@ -147,32 +147,34 @@ class clienteController {
             });
         });
     }
-    //CONTROLLER PARA ADICIONAR ENDEREÇOS
-    static adicionarEndereco(req, res) {
+    //CONTROLLER PARA CADASTRAR ENDEREÇOS
+    static cadastrarEnderecos(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const { logradouro, numero, complemento, bairro, cidade, estado, cep, latitude, longitude } = req.body;
-            yield exports.prisma.endereco
-                .create({
-                data: {
-                    logradouro,
-                    numero,
-                    complemento,
-                    bairro,
-                    cidade,
-                    estado,
-                    cep,
-                    latitude,
-                    longitude,
-                    clienteId: Number(id),
-                },
-            })
-                .then((endereco) => {
-                return res.status(201).json({ message: 'Endereço adicionado com sucesso', endereco });
-            })
-                .catch(() => {
-                return res.status(400).json({ message: 'Erro ao adicionar endereço' });
-            });
+            const { logradouro, numero, complemento, bairro, cidade, estado, cep } = req.body;
+            yield (0, infoEndereco_1.infoEndereco)(cep).then((cord) => __awaiter(this, void 0, void 0, function* () {
+                yield exports.prisma.endereco
+                    .create({
+                    data: {
+                        logradouro,
+                        numero,
+                        complemento,
+                        bairro,
+                        cidade,
+                        estado,
+                        cep,
+                        latitude: cord.lat,
+                        longitude: cord.lng,
+                        clienteId: Number(id),
+                    },
+                })
+                    .then((endereco) => {
+                    return res.status(201).json({ message: 'Endereço adicionado com sucesso', endereco });
+                })
+                    .catch(() => {
+                    return res.status(400).json({ message: 'Erro ao adicionar endereço' });
+                });
+            }));
         });
     }
     //CONTROLLER PARA ATUALIZAR ENDEREÇOS
@@ -200,13 +202,15 @@ class clienteController {
                     .then((endereco) => {
                     return res.status(201).json({ message: 'Endereço atualizado com sucesso', endereco });
                 })
-                    .catch(() => {
+                    .catch((e) => {
+                    console.log(e);
                     return res.status(400).json({ message: 'Erro ao atualizar endereço' });
                 });
             }))
                 .catch(() => {
                 res.json(400).json({ message: 'Erro ao atualizar endereço, cheque seu cep' });
-            });
+            })
+                .catch((e) => console.log(e));
         });
     }
     //CONTROLLER PARA REMOVER ENDEREÇOS

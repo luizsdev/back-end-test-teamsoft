@@ -10,6 +10,4 @@ export type Endereco = {
   cidade: string;
   estado: string;
   cep: string;
-  latitude: string;
-  longitude: string;
 };
