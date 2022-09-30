@@ -1,6 +1,5 @@
 import app from '../index';
 import supertest from 'supertest';
-import { prisma } from '../Controllers/clienteController';
 let userId: number;
 let enderecoId: number;
 describe('ROTAS CLIENTE', () => {
@@ -30,8 +29,11 @@ describe('ROTAS CLIENTE', () => {
         },
       });
     userId = response.body.cliente.id;
-    enderecoId = response.body.endereco.id;
-    console.log(response.body);
+    enderecoId = response.body.enderecoAtualizado.id;
+    expect(response.status).toBe(201);
+  });
+  it('GET || LER CLIENTES POR ID', async () => {
+    const response = await supertest(app).get(`/clientes/${userId}`);
     expect(response.status).toBe(201);
   });
   it('PUT || ATUALIZAR CLIENTES', async () => {
@@ -47,7 +49,7 @@ describe('ROTAS CLIENTE', () => {
 describe('ROTAS ENDEREÇO', () => {
   it('POST || CADASTRAR ENDEREÇO', async () => {
     const response = await supertest(app).post(`/cadastroendereco/${userId}`).send({
-      logradouro: 'atualizarTeste',
+      logradouro: 'novoTeste',
       numero: '123',
       complemento: 'novoTeste',
       bairro: 'novoTeste',
@@ -59,4 +61,27 @@ describe('ROTAS ENDEREÇO', () => {
     });
     expect(response.status).toBe(201);
   });
+  it('PUT || atualizar ENDEREÇO', async () => {
+    const response = await supertest(app).put(`/atualizarendereco/${enderecoId}`).send({
+      logradouro: 'atualizarTeste',
+      numero: '321',
+      complemento: 'atualizarTeste',
+      bairro: 'atualizarTeste',
+      cidade: 'atualizarTeste',
+      estado: 'MG',
+      cep: '23456789',
+      latitude: 'atualizarTeste',
+      longitude: 'atualizarTeste',
+    });
+    expect(response.status).toBe(201);
+  });
+  it('DELETE || DELETAR ENDEREÇO', async () => {
+    const response = await supertest(app).delete(`/removerendereco/${enderecoId}`);
+    expect(response.status).toBe(201);
+  });
+});
+//FECHAR O CICLO DE TESTES REMOVENDO O CLIENTE INICIAL
+it('DELETE || DELETAR CLIENTE', async () => {
+  const response = await supertest(app).delete(`/removercliente/${userId}`);
+  expect(response.status).toBe(201);
 });

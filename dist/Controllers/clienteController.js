@@ -26,7 +26,7 @@ class clienteController {
                 .then((clientes) => {
                 return res.status(201).json(clientes);
             })
-                .catch((e) => {
+                .catch(() => {
                 return res.status(400).json({ message: 'Erro ao ler clientes' });
             });
         });
@@ -170,8 +170,7 @@ class clienteController {
                 .then((endereco) => {
                 return res.status(201).json({ message: 'Endereço adicionado com sucesso', endereco });
             })
-                .catch((e) => {
-                console.log(e);
+                .catch(() => {
                 return res.status(400).json({ message: 'Erro ao adicionar endereço' });
             });
         });

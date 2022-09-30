@@ -44,7 +44,6 @@ let lat = '';
 let lng = '';
 function infoEndereco(cep) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log(API_KEY);
         yield axios_1.default
             .get(`https://maps.googleapis.com/maps/api/geocode/json?address=${cep}&key=${API_KEY}`)
             .then((response) => {

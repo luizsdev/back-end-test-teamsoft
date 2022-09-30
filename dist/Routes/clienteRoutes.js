@@ -17,7 +17,7 @@ router.get('/clientes/:id', clienteController_1.clienteController.lerClientesPor
 router.post('/cadastrocliente', validarDadosClientes_1.validarDadosClientes, clienteController_1.clienteController.cadastrarClientes);
 //ALTERA OS DADOS DE UM CLIENTE EXISTENTE
 router.put('/atualizarcliente/:id', clienteController_1.clienteController.atualizarClientes);
-//REMOVE UM CLIENTE, CONSEQUENTEMENTE SEUS ENDEREÇOS TAMBÉM
+//REMOVE UM CLIENTE, CONSEQUENTEMENTE SEUS ENDEREÇOS
 router.delete('/removercliente/:id', clienteController_1.clienteController.removerClientes);
 //ADICIONA UM ENDEREÇO BASEADO NO ID DO CLIENTE
 router.post('/cadastroendereco/:id', validarDadosClientes_1.validarDadosEndereco, clienteController_1.clienteController.adicionarEndereco);
