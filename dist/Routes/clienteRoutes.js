@@ -11,6 +11,8 @@ const router = (0, express_1.Router)();
 router.use((0, cors_1.default)());
 //FAZ UMA LEITURA DE TODOS OS CLIENTES E SEUS ENDEREÇOS
 router.get('/clientes', clienteController_1.clienteController.lerClientes);
+//FAZ UMA LEITURA DE UM CLIENTE ESPECÍFICO E SEUS ENDEREÇOS BASEADO NO ID
+router.get('/clientes/:id', clienteController_1.clienteController.lerClientesPorId);
 //CRIA UM NOVO CLIENTE
 router.post('/cadastrocliente', validarDadosClientes_1.validarDadosClientes, clienteController_1.clienteController.cadastrarClientes);
 //ALTERA OS DADOS DE UM CLIENTE EXISTENTE

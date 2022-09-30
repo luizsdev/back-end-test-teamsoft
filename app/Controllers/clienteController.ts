@@ -16,9 +16,24 @@ export class clienteController {
       .then((clientes: Cliente[]) => {
         return res.status(201).json(clientes);
       })
-      .catch((e: Error) => {
-        console.log(e);
+      .catch(() => {
         return res.status(400).json({ message: 'Erro ao ler clientes' });
+      });
+  }
+  static async lerClientesPorId(req: Request, res: Response) {
+    const { id } = req.params;
+    await prisma.cliente
+      .findUnique({
+        where: { id: Number(id) },
+        include: {
+          enderecos: true,
+        },
+      })
+      .then((cliente) => {
+        return res.status(201).json(cliente);
+      })
+      .catch(() => {
+        return res.status(400).json({ message: 'Erro ao ler cliente' });
       });
   }
   //CONTROLLER PARA CADASTRO DE CLIENTES
@@ -44,14 +59,26 @@ export class clienteController {
               cidade: primeiroendereco.cidade,
               estado: primeiroendereco.estado,
               cep: primeiroendereco.cep,
-              latitude: primeiroendereco.latitude,
-              longitude: primeiroendereco.longitude,
+              latitude: '',
+              longitude: '',
               clienteId: cliente.id,
             },
           })
-          .then((endereco: Endereco) => {
-            console.log(infoEndereco(primeiroendereco.cep));
-            return res.status(201).json({ message: 'Cliente cadastrado com sucesso', cliente, endereco });
+          .then(async (endereco: Endereco) => {
+            infoEndereco(endereco.cep)
+              .then(async (cord) => {
+                await prisma.endereco.update({
+                  where: { id: endereco.id },
+                  data: { latitude: cord.lat, longitude: cord.lng },
+                });
+              })
+              .then(async () => {
+                const enderecoAtualizado = await prisma.endereco.findUnique({ where: { id: endereco.id } });
+                return res.status(201).json({ message: 'Cliente cadastrado com sucesso', cliente, enderecoAtualizado });
+              })
+              .catch(() => {
+                return res.status(400).json({ message: 'Erro ao cadastrar endereco, cheque seu cep' });
+              });
           })
           .catch(async () => {
             //REMOVE O USER CRIADO COM DADOS DE ENDEREÇO FALTANDO
@@ -63,7 +90,6 @@ export class clienteController {
         if (e.code === 'P2002') {
           return res.status(400).json({ message: 'Cliente já cadastrado' });
         } else {
-          console.log(e);
           return res.status(400).json({ message: 'Erro ao cadastrar endereço' });
         }
       });
@@ -123,25 +149,40 @@ export class clienteController {
       .then((endereco: Endereco) => {
         return res.status(201).json({ message: 'Endereço adicionado com sucesso', endereco });
       })
-      .catch((e) => {
-        console.log(e);
+      .catch(() => {
         return res.status(400).json({ message: 'Erro ao adicionar endereço' });
       });
   }
   //CONTROLLER PARA ATUALIZAR ENDEREÇOS
   static async atualizarEndereco(req: Request, res: Response) {
     const { id } = req.params;
-    const { logradouro, numero, complemento, bairro, cidade, estado, cep, latitude, longitude } = req.body;
-    await prisma.endereco
-      .update({
-        where: { id: Number(id) },
-        data: { logradouro, numero, complemento, bairro, cidade, estado, cep, latitude, longitude },
-      })
-      .then((endereco: Endereco) => {
-        return res.status(201).json({ message: 'Endereço atualizado com sucesso', endereco });
+    const { logradouro, numero, complemento, bairro, cidade, estado, cep } = req.body;
+    infoEndereco(cep)
+      .then(async (cord) => {
+        await prisma.endereco
+          .update({
+            where: { id: Number(id) },
+            data: {
+              logradouro,
+              numero,
+              complemento,
+              bairro,
+              cidade,
+              estado,
+              cep,
+              latitude: cord.lat,
+              longitude: cord.lng,
+            },
+          })
+          .then((endereco: Endereco) => {
+            return res.status(201).json({ message: 'Endereço atualizado com sucesso', endereco });
+          })
+          .catch(() => {
+            return res.status(400).json({ message: 'Erro ao atualizar endereço' });
+          });
       })
       .catch(() => {
-        return res.status(400).json({ message: 'Erro ao atualizar endereço' });
+        res.json(400).json({ message: 'Erro ao atualizar endereço, cheque seu cep' });
       });
   }
   //CONTROLLER PARA REMOVER ENDEREÇOS

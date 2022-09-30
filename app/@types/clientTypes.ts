@@ -2,6 +2,7 @@ export type Cliente = {
   id?: number;
 };
 export type Endereco = {
+  id?: number;
   logradouro: string;
   numero: string;
   complemento: string;

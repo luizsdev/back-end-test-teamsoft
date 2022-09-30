@@ -27,8 +27,25 @@ class clienteController {
                 return res.status(201).json(clientes);
             })
                 .catch((e) => {
-                console.log(e);
                 return res.status(400).json({ message: 'Erro ao ler clientes' });
+            });
+        });
+    }
+    static lerClientesPorId(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id } = req.params;
+            yield exports.prisma.cliente
+                .findUnique({
+                where: { id: Number(id) },
+                include: {
+                    enderecos: true,
+                },
+            })
+                .then((cliente) => {
+                return res.status(201).json(cliente);
+            })
+                .catch(() => {
+                return res.status(400).json({ message: 'Erro ao ler cliente' });
             });
         });
     }
@@ -56,15 +73,27 @@ class clienteController {
                         cidade: primeiroendereco.cidade,
                         estado: primeiroendereco.estado,
                         cep: primeiroendereco.cep,
-                        latitude: primeiroendereco.latitude,
-                        longitude: primeiroendereco.longitude,
+                        latitude: '',
+                        longitude: '',
                         clienteId: cliente.id,
                     },
                 })
-                    .then((endereco) => {
-                    console.log((0, infoEndereco_1.infoEndereco)(primeiroendereco.cep));
-                    return res.status(201).json({ message: 'Cliente cadastrado com sucesso', cliente, endereco });
-                })
+                    .then((endereco) => __awaiter(this, void 0, void 0, function* () {
+                    (0, infoEndereco_1.infoEndereco)(endereco.cep)
+                        .then((cord) => __awaiter(this, void 0, void 0, function* () {
+                        yield exports.prisma.endereco.update({
+                            where: { id: endereco.id },
+                            data: { latitude: cord.lat, longitude: cord.lng },
+                        });
+                    }))
+                        .then(() => __awaiter(this, void 0, void 0, function* () {
+                        const enderecoAtualizado = yield exports.prisma.endereco.findUnique({ where: { id: endereco.id } });
+                        return res.status(201).json({ message: 'Cliente cadastrado com sucesso', cliente, enderecoAtualizado });
+                    }))
+                        .catch(() => {
+                        return res.status(400).json({ message: 'Erro ao cadastrar endereco, cheque seu cep' });
+                    });
+                }))
                     .catch(() => __awaiter(this, void 0, void 0, function* () {
                     //REMOVE O USER CRIADO COM DADOS DE ENDEREÇO FALTANDO
                     yield exports.prisma.cliente.delete({ where: { id: cliente.id } });
@@ -76,7 +105,6 @@ class clienteController {
                     return res.status(400).json({ message: 'Cliente já cadastrado' });
                 }
                 else {
-                    console.log(e);
                     return res.status(400).json({ message: 'Erro ao cadastrar endereço' });
                 }
             });
@@ -152,17 +180,33 @@ class clienteController {
     static atualizarEndereco(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const { logradouro, numero, complemento, bairro, cidade, estado, cep, latitude, longitude } = req.body;
-            yield exports.prisma.endereco
-                .update({
-                where: { id: Number(id) },
-                data: { logradouro, numero, complemento, bairro, cidade, estado, cep, latitude, longitude },
-            })
-                .then((endereco) => {
-                return res.status(201).json({ message: 'Endereço atualizado com sucesso', endereco });
-            })
+            const { logradouro, numero, complemento, bairro, cidade, estado, cep } = req.body;
+            (0, infoEndereco_1.infoEndereco)(cep)
+                .then((cord) => __awaiter(this, void 0, void 0, function* () {
+                yield exports.prisma.endereco
+                    .update({
+                    where: { id: Number(id) },
+                    data: {
+                        logradouro,
+                        numero,
+                        complemento,
+                        bairro,
+                        cidade,
+                        estado,
+                        cep,
+                        latitude: cord.lat,
+                        longitude: cord.lng,
+                    },
+                })
+                    .then((endereco) => {
+                    return res.status(201).json({ message: 'Endereço atualizado com sucesso', endereco });
+                })
+                    .catch(() => {
+                    return res.status(400).json({ message: 'Erro ao atualizar endereço' });
+                });
+            }))
                 .catch(() => {
-                return res.status(400).json({ message: 'Erro ao atualizar endereço' });
+                res.json(400).json({ message: 'Erro ao atualizar endereço, cheque seu cep' });
             });
         });
     }

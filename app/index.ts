@@ -1,5 +1,6 @@
 import express from 'express';
 import router from './Routes/clienteRoutes';
+import { infoEndereco } from './Services/infoEndereco';
 const PORT = process.env.port || 5000;
 const app = express();
 
@@ -10,3 +11,5 @@ app.listen(PORT, () => {
 });
 
 export default app;
+
+infoEndereco('22790670');

@@ -7,6 +7,8 @@ router.use(cors());
 
 //FAZ UMA LEITURA DE TODOS OS CLIENTES E SEUS ENDEREÇOS
 router.get('/clientes', clienteController.lerClientes);
+//FAZ UMA LEITURA DE UM CLIENTE ESPECÍFICO E SEUS ENDEREÇOS BASEADO NO ID
+router.get('/clientes/:id', clienteController.lerClientesPorId);
 //CRIA UM NOVO CLIENTE
 router.post('/cadastrocliente', validarDadosClientes, clienteController.cadastrarClientes);
 //ALTERA OS DADOS DE UM CLIENTE EXISTENTE

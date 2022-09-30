@@ -3,14 +3,17 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 const API_KEY = process.env.API_KEY;
-const arrayLatLong: string[] = [];
-
-export const infoEndereco = (cep: string) => {
-  console.log(API_KEY);
-  axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${cep}&key=${API_KEY}`).then((response) => {
-    console.log(response);
-    const { lat, lng } = response.data.results[0].geometry.location;
-    arrayLatLong.push(lat, lng);
-    return arrayLatLong;
-  });
-};
+let lat = '';
+let lng = '';
+export async function infoEndereco(cep: string) {
+  await axios
+    .get(`https://maps.googleapis.com/maps/api/geocode/json?address=${cep}&key=${API_KEY}`)
+    .then((response) => {
+      lat = String(response.data.results[0].geometry.location.lat);
+      lng = String(response.data.results[0].geometry.location.lng);
+    })
+    .catch((e) => {
+      return e;
+    });
+  return { lat, lng };
+}

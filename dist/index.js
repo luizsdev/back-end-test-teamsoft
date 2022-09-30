@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const clienteRoutes_1 = __importDefault(require("./Routes/clienteRoutes"));
+const infoEndereco_1 = require("./Services/infoEndereco");
 const PORT = process.env.port || 5000;
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
@@ -13,3 +14,4 @@ app.listen(PORT, () => {
     console.log('Server listening on port ' + PORT);
 });
 exports.default = app;
+(0, infoEndereco_1.infoEndereco)('22790670');
