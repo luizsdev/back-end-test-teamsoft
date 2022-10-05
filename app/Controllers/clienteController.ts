@@ -20,6 +20,7 @@ export class clienteController {
         return res.status(400).json({ message: 'Erro ao ler clientes' });
       });
   }
+  //CONTROLLER PARA LER CLIENTES POR ID
   static async lerClientesPorId(req: Request, res: Response) {
     const { id } = req.params;
     await prisma.cliente
