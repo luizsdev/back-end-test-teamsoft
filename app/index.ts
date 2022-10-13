@@ -12,4 +12,3 @@ app.listen(PORT, () => {
 
 export default app;
 
-infoEndereco('22790670');
